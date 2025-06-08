@@ -18,8 +18,9 @@ export default function VehicleImportCalculator() {
   const [engineCapacity, setEngineCapacity] = useState<number>(1000)
   const [vehicleValue, setVehicleValue] = useState<number>(0)
   const [currentRate, setCurrentRate] = useState<number>(0.5)
-  const [freightCharges, setFreightCharges] = useState<number>(0)
-  const [insuranceCharges, setInsuranceCharges] = useState<number>(0)
+  const [actualRate, setActualRate] = useState<number>(0.5)
+  const [freightCharges, setFreightCharges] = useState<number>(250000)
+  const [insuranceCharges, setInsuranceCharges] = useState<number>(250000)
   const [isLoadingRate, setIsLoadingRate] = useState<boolean>(false)
 
   // Calculated values
@@ -67,23 +68,27 @@ export default function VehicleImportCalculator() {
   }, [vehicleType, engineCapacity, selectedModel])
 
   // Fetch exchange rate from API
- const fetchExchangeRate = async () => {
-  setIsLoadingRate(true)
-  try {
-    const response = await fetch(`https://api.exchangerate-api.com/v4/latest/${selectedCurrency}`)
-    const data = await response.json()
+  const fetchExchangeRate = async () => {
+    setIsLoadingRate(true)
+    try {
+      const response = await fetch(`https://api.exchangerate-api.com/v4/latest/${selectedCurrency}`)
+      const data = await response.json()
 
-    if (data.rates && data.rates.LKR) {
-      setCurrentRate(data.rates.LKR)
-    } else {
-      console.warn("Could not fetch exchange rate, using default")
+      if (data.rates && data.rates.LKR) {
+        // Add 5% buffer and ceil to 2 decimal places
+        const rate = data.rates.LKR
+        setActualRate(rate)
+        const rateWithBuffer = rate + (rate * 0.05)
+        setCurrentRate(Math.ceil(rateWithBuffer * 100) / 100)
+      } else {
+        console.warn("Could not fetch exchange rate, using default")
+      }
+    } catch (error) {
+      console.error("Error fetching exchange rate:", error)
+    } finally {
+      setIsLoadingRate(false)
     }
-  } catch (error) {
-    console.error("Error fetching exchange rate:", error)
-  } finally {
-    setIsLoadingRate(false)
   }
-}
 
   useEffect(() => {
     fetchExchangeRate()
@@ -133,15 +138,14 @@ export default function VehicleImportCalculator() {
   }, [vehicleValue, currentRate, freightCharges, insuranceCharges, vehicleType, xidTaxRate, engineCapacity, currentTaxBracket, selectedModel])
 
   return (
-    <Card className="shadow-lg">
-      <CardHeader className="bg-slate-50 border-b">
+    <Card className="shadow-lg rounded-lg">
+      <CardHeader className="bg-slate-50 dark:bg-zinc-800  border-b rounded-t-lg">
         <div className="flex items-center gap-2">
-          <Calculator className="h-6 w-6 text-slate-700" />
           <CardTitle>Vehicle Import Cost Calculator</CardTitle>
         </div>
         <CardDescription>Enter your vehicle details to calculate import costs</CardDescription>
       </CardHeader>
-      <CardContent className="pt-6 px-1 md:px-4">
+      <CardContent className="pt-6 px-2 p-2 md:px-4 dark:bg-zinc-800">
         <VehicleImportForm
           selectedCurrency={selectedCurrency}
           selectedModel={selectedModel}
@@ -165,6 +169,7 @@ export default function VehicleImportCalculator() {
           onFreightChargesChange={setFreightCharges}
           onInsuranceChargesChange={setInsuranceCharges}
           onRefreshRate={fetchExchangeRate}
+          actualRate={actualRate}
         />
 
         <CostBreakdown

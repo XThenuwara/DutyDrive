@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import { RefreshCw } from "lucide-react"
+import { NumericInput } from "@/components/ui/numeric-input"
 
 interface VehicleImportFormProps {
   selectedCurrency: Currency
@@ -29,6 +30,7 @@ interface VehicleImportFormProps {
   onFreightChargesChange: (charges: number) => void
   onInsuranceChargesChange: (charges: number) => void
   onRefreshRate: () => void
+  actualRate?: number
 }
 
 export function VehicleImportForm(props: VehicleImportFormProps) {
@@ -89,11 +91,11 @@ export function VehicleImportForm(props: VehicleImportFormProps) {
 
           <div className="space-y-2">
             <Label htmlFor="engineCapacity">Engine Capacity (cc)</Label>
-            <Input
+            <NumericInput
               id="engineCapacity"
-              type="text"
-              value={formatNumberWithCommas(props.engineCapacity)}
-              onChange={(e) => props.onEngineCapacityChange(parseNumberFromCommas(e.target.value))}
+              value={props.engineCapacity}
+              onChange={props.onEngineCapacityChange}
+              placeholder="e.g., 1000"
             />
             {props.currentTaxBracket && (
               <p className="text-xs text-slate-500 mt-1">
@@ -107,11 +109,10 @@ export function VehicleImportForm(props: VehicleImportFormProps) {
           <Label htmlFor="vehicleValue">
             Vehicle Value (in {props.taxRatesData.supportedCurrencies[props.selectedCurrency].name})
           </Label>
-          <Input
+          <NumericInput
             id="vehicleValue"
-            type="text"
-            value={props.vehicleValue ? formatNumberWithCommas(props.vehicleValue) : ""}
-            onChange={(e) => props.onVehicleValueChange(parseNumberFromCommas(e.target.value))}
+            value={props.vehicleValue}
+            onChange={props.onVehicleValueChange}
             placeholder={`e.g., 2,500,000 ${props.taxRatesData.supportedCurrencies[props.selectedCurrency].symbol}`}
           />
           {props.vehicleValue > 0 && (
@@ -143,7 +144,9 @@ export function VehicleImportForm(props: VehicleImportFormProps) {
               value={props.currentRate || ""}
               onChange={(e) => props.onCurrentRateChange(Number(e.target.value))}
             />
-            <p className="text-xs text-slate-500">Click refresh for live rate</p>
+            <p className="text-xs text-slate-500">
+                {props.actualRate ? `Actual Rate : (${formatCurrency(props.actualRate)}) + 0.05%` : ""}
+            </p>
           </div>
 
           <div className="space-y-2">
@@ -168,22 +171,20 @@ export function VehicleImportForm(props: VehicleImportFormProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
             <Label htmlFor="rateCharges">Freight Charges (LKR)</Label>
-            <Input
+            <NumericInput
               id="rateCharges"
-              type="text"
-              value={props.freightCharges ? formatNumberWithCommas(props.freightCharges) : ""}
-              onChange={(e) => props.onFreightChargesChange(parseNumberFromCommas(e.target.value))}
+              value={props.freightCharges}
+              onChange={props.onFreightChargesChange}
               placeholder="e.g., 50,000"
             />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="insuranceCharges">Insurance Charges (LKR)</Label>
-            <Input
+            <NumericInput
               id="insuranceCharges"
-              type="text"
-              value={props.insuranceCharges ? formatNumberWithCommas(props.insuranceCharges) : ""}
-              onChange={(e) => props.onInsuranceChargesChange(parseNumberFromCommas(e.target.value))}
+              value={props.insuranceCharges}
+              onChange={props.onInsuranceChargesChange}
               placeholder="e.g., 25,000"
             />
           </div>

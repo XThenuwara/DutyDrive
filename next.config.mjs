@@ -10,7 +10,7 @@ const nextConfig = {
     unoptimized: true,
   },
   output: 'export',
-  basePath: "/DutyDrive",
+  basePath: '/DutyDrive',
    trailingSlash: true,
 }
 

@@ -26,3 +26,8 @@ export const formatReadable = (value: number) => {
   }
   return value.toFixed(2);
 };
+
+export const parseNumberFromCommas = (value: string): number => {
+  const parsedValue = Number(value.replace(/,/g, ""));
+  return isNaN(parsedValue) ? 0 : parsedValue;
+};
