@@ -1,0 +1,282 @@
+{
+  "models": {
+    "default": {
+      "name": "2025 Standard Vehicle Import Model",
+      "description": "CIF rate of 30%, VAT rate of 18%, and luxury tax rates beyond 5M for non-hybrid vehicles and 5.5M for hybrid vehicles.",
+      "cifRate": 0.3,
+      "vatRate": 0.18,
+      "luxuryTax": {
+        "NonHybrid": {
+          "threshold": 5000000,
+          "rate": 1.0
+        },
+        "Hybrid": {
+          "threshold": 5500000,
+          "rate": 0.8
+        }
+      },
+      "xidRates": {
+        "NonHybrid": [
+          {
+            "hsCode": "8703.21.69",
+            "description": "1000CC Below",
+            "minCC": 0,
+            "maxCC": 1000,
+            "yearLimit": "Not more than 3 yrs",
+            "ratePerCC": 2450.0,
+            "ratePerUnit": 1992000,
+            "ltx": true,
+            "vat": true
+          },
+          {
+            "hsCode": "8703.22.50",
+            "description": "1000-1300CC",
+            "minCC": 1001,
+            "maxCC": 1300,
+            "yearLimit": "Not more than 3 yrs",
+            "ratePerCC": 3850.0,
+            "ratePerUnit": null,
+            "ltx": true,
+            "vat": true
+          },
+          {
+            "hsCode": "8703.23.52",
+            "description": "1300-1500CC",
+            "minCC": 1301,
+            "maxCC": 1500,
+            "yearLimit": "Not more than 3 yrs",
+            "ratePerCC": 4450.0,
+            "ratePerUnit": null,
+            "ltx": true,
+            "vat": true
+          },
+          {
+            "hsCode": "8703.23.55",
+            "description": "1500-1600CC",
+            "minCC": 1501,
+            "maxCC": 1600,
+            "yearLimit": "Not more than 3 yrs",
+            "ratePerCC": 5150.0,
+            "ratePerUnit": null,
+            "ltx": true,
+            "vat": true
+          },
+          {
+            "hsCode": "8703.23.59",
+            "description": "1600-1800CC",
+            "minCC": 1601,
+            "maxCC": 1800,
+            "yearLimit": "Not more than 3 yrs",
+            "ratePerCC": 6400.0,
+            "ratePerUnit": null,
+            "ltx": true,
+            "vat": true
+          },
+          {
+            "hsCode": "",
+            "description": "1800-2000CC",
+            "minCC": 1801,
+            "maxCC": 2000,
+            "yearLimit": "Not more than 3 yrs",
+            "ratePerCC": 7700.0,
+            "ratePerUnit": null,
+            "ltx": true,
+            "vat": true
+          },
+          {
+            "hsCode": "",
+            "description": "2000-2500CC",
+            "minCC": 2001,
+            "maxCC": 2500,
+            "yearLimit": "Not more than 3 yrs",
+            "ratePerCC": 8450.0,
+            "ratePerUnit": null,
+            "ltx": true,
+            "vat": true
+          },
+          {
+            "hsCode": "8703.23.70",
+            "description": "2500-2750CC",
+            "minCC": 2501,
+            "maxCC": 2750,
+            "yearLimit": "Not more than 3 yrs",
+            "ratePerCC": 9650.0,
+            "ratePerUnit": null,
+            "ltx": true,
+            "vat": true
+          },
+          {
+            "hsCode": "",
+            "description": "2750-3000CC",
+            "minCC": 2751,
+            "maxCC": 3000,
+            "yearLimit": "Not more than 3 yrs",
+            "ratePerCC": 10850.0,
+            "ratePerUnit": null,
+            "ltx": true,
+            "vat": true
+          },
+          {
+            "hsCode": "",
+            "description": "3000-4000CC",
+            "minCC": 3001,
+            "maxCC": 4000,
+            "yearLimit": "Not more than 3 yrs",
+            "ratePerCC": 12050.0,
+            "ratePerUnit": null,
+            "ltx": true,
+            "vat": true
+          },
+          {
+            "hsCode": "8703.24.50",
+            "description": "4000 Above",
+            "minCC": 4001,
+            "maxCC": 999999,
+            "yearLimit": "Not more than 3 yrs",
+            "ratePerCC": 13300.0,
+            "ratePerUnit": null,
+            "ltx": true,
+            "vat": true
+          }
+        ],
+        "Hybrid": [
+          {
+            "hsCode": "8703.40.28",
+            "description": "1000CC Below",
+            "minCC": 0,
+            "maxCC": 1000,
+            "yearLimit": "Not more than 3 yrs",
+            "ratePerCC": null,
+            "ratePerUnit": 1810900.0,
+            "ltx": true,
+            "vat": true
+          },
+          {
+            "hsCode": "8703.40.35",
+            "description": "1000-1300CC",
+            "minCC": 1001,
+            "maxCC": 1300,
+            "yearLimit": "Not more than 3 yrs",
+            "ratePerCC": 2750.0,
+            "ratePerUnit": null,
+            "ltx": true,
+            "vat": true
+          },
+          {
+            "hsCode": "8703.40.45",
+            "description": "1300-1500CC",
+            "minCC": 1301,
+            "maxCC": 1500,
+            "yearLimit": "Not more than 3 yrs",
+            "ratePerCC": 3450.0,
+            "ratePerUnit": null,
+            "ltx": true,
+            "vat": true
+          },
+          {
+            "hsCode": "8703.40.51",
+            "description": "1500-1600CC",
+            "minCC": 1501,
+            "maxCC": 1600,
+            "yearLimit": "Not more than 3 yrs",
+            "ratePerCC": 4800.0,
+            "ratePerUnit": null,
+            "ltx": true,
+            "vat": true
+          },
+          {
+            "hsCode": "8703.40.53",
+            "description": "1600-1800CC",
+            "minCC": 1601,
+            "maxCC": 1800,
+            "yearLimit": "Not more than 3 yrs",
+            "ratePerCC": 6300.0,
+            "ratePerUnit": null,
+            "ltx": true,
+            "vat": true
+          },
+          {
+            "hsCode": "8703.40.58",
+            "description": "1800-2000CC",
+            "minCC": 1801,
+            "maxCC": 2000,
+            "yearLimit": "Not more than 3 yrs",
+            "ratePerCC": 6900.0,
+            "ratePerUnit": null,
+            "ltx": true,
+            "vat": true
+          },
+          {
+            "hsCode": "",
+            "description": "2000-2500CC",
+            "minCC": 2001,
+            "maxCC": 2500,
+            "yearLimit": "Not more than 3 yrs",
+            "ratePerCC": 7250.0,
+            "ratePerUnit": null,
+            "ltx": true,
+            "vat": true
+          },
+          {
+            "hsCode": "8703.40.71",
+            "description": "2500-2750CC",
+            "minCC": 2501,
+            "maxCC": 2750,
+            "yearLimit": "Not more than 3 yrs",
+            "ratePerCC": 8450.0,
+            "ratePerUnit": null,
+            "ltx": true,
+            "vat": true
+          },
+          {
+            "hsCode": "",
+            "description": "2750-3000CC",
+            "minCC": 2751,
+            "maxCC": 3000,
+            "yearLimit": "Not more than 3 yrs",
+            "ratePerCC": 9650.0,
+            "ratePerUnit": null,
+            "ltx": true,
+            "vat": true
+          },
+          {
+            "hsCode": "",
+            "description": "3000-4000CC",
+            "minCC": 3001,
+            "maxCC": 4000,
+            "yearLimit": "Not more than 3 yrs",
+            "ratePerCC": 10850.0,
+            "ratePerUnit": null,
+            "ltx": true,
+            "vat": true
+          },
+          {
+            "hsCode": "8703.40.91",
+            "description": "4000 Above",
+            "minCC": 4001,
+            "maxCC": 999999,
+            "yearLimit": "Not more than 3 yrs",
+            "ratePerCC": 12050.0,
+            "ratePerUnit": null,
+            "ltx": true,
+            "vat": true
+          }
+        ]
+      }
+    }
+  },
+  "supportedCurrencies": {
+    "JPY": {
+      "name": "Japanese Yen",
+      "symbol": "¥"
+    },
+    "USD": {
+      "name": "US Dollar",
+      "symbol": "$"
+    },
+    "EUR": {
+      "name": "Euro",
+      "symbol": "€"
+    }
+  }
+}
