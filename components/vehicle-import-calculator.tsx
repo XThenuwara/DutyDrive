@@ -18,7 +18,7 @@ export default function VehicleImportCalculator() {
   const [engineCapacity, setEngineCapacity] = useState<number>(1000)
   const [vehicleValue, setVehicleValue] = useState<number>(0)
   const [currentRate, setCurrentRate] = useState<number>(0.5)
-  const [rateCharges, setRateCharges] = useState<number>(0)
+  const [freightCharges, setFreightCharges] = useState<number>(0)
   const [insuranceCharges, setInsuranceCharges] = useState<number>(0)
   const [isLoadingRate, setIsLoadingRate] = useState<boolean>(false)
 
@@ -91,7 +91,7 @@ export default function VehicleImportCalculator() {
 
   useEffect(() => {
     // Calculate CIF Value
-    const calculatedCif = vehicleValue * currentRate + rateCharges + insuranceCharges
+    const calculatedCif = vehicleValue * currentRate + freightCharges + insuranceCharges
     setCifValue(calculatedCif)
 
     const selectedModelData = taxRatesData.models[selectedModel]
@@ -130,7 +130,7 @@ export default function VehicleImportCalculator() {
 
     // Calculate Total Cost
     setTotalCost(calculatedTotalWithoutVat + calculatedVat)
-  }, [vehicleValue, currentRate, rateCharges, insuranceCharges, vehicleType, xidTaxRate, engineCapacity, currentTaxBracket, selectedModel])
+  }, [vehicleValue, currentRate, freightCharges, insuranceCharges, vehicleType, xidTaxRate, engineCapacity, currentTaxBracket, selectedModel])
 
   return (
     <Card className="shadow-lg">
@@ -149,7 +149,7 @@ export default function VehicleImportCalculator() {
           engineCapacity={engineCapacity}
           vehicleValue={vehicleValue}
           currentRate={currentRate}
-          rateCharges={rateCharges}
+          freightCharges={freightCharges}
           insuranceCharges={insuranceCharges}
           isLoadingRate={isLoadingRate}
           currentTaxBracket={currentTaxBracket}
@@ -162,7 +162,7 @@ export default function VehicleImportCalculator() {
           onEngineCapacityChange={setEngineCapacity}
           onVehicleValueChange={setVehicleValue}
           onCurrentRateChange={setCurrentRate}
-          onRateChargesChange={setRateCharges}
+          onFreightChargesChange={setFreightCharges}
           onInsuranceChargesChange={setInsuranceCharges}
           onRefreshRate={fetchExchangeRate}
         />

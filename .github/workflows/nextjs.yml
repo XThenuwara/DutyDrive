@@ -73,19 +73,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-
       - name: Install dependencies
-        run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+        run: npm i --legacy-peer-deps
       - name: Build with Next.js
         run: |
           echo "Starting Next.js build..."
           ${{ steps.detect-package-manager.outputs.runner }} next build
           echo "Build completed. Checking output directory..."
-          echo "Checking parent directory:"
-          ls -la ..
-          echo "Checking current directory:"
-          ls -la
-          echo "Checking if 'out' directory exists..."
-          ls -la out || echo "out directory not found"
-          echo "Current working directory:"
           pwd
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

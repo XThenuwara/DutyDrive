@@ -13,7 +13,7 @@ interface VehicleImportFormProps {
   engineCapacity: number
   vehicleValue: number
   currentRate: number
-  rateCharges: number
+  freightCharges: number
   insuranceCharges: number
   isLoadingRate: boolean
   currentTaxBracket: TaxRateEntry | null
@@ -26,7 +26,7 @@ interface VehicleImportFormProps {
   onEngineCapacityChange: (capacity: number) => void
   onVehicleValueChange: (value: number) => void
   onCurrentRateChange: (rate: number) => void
-  onRateChargesChange: (charges: number) => void
+  onFreightChargesChange: (charges: number) => void
   onInsuranceChargesChange: (charges: number) => void
   onRefreshRate: () => void
 }
@@ -167,12 +167,12 @@ export function VehicleImportForm(props: VehicleImportFormProps) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <Label htmlFor="rateCharges">Rate Charges (LKR)</Label>
+            <Label htmlFor="rateCharges">Freight Charges (LKR)</Label>
             <Input
               id="rateCharges"
               type="text"
-              value={props.rateCharges ? formatNumberWithCommas(props.rateCharges) : ""}
-              onChange={(e) => props.onRateChargesChange(parseNumberFromCommas(e.target.value))}
+              value={props.freightCharges ? formatNumberWithCommas(props.freightCharges) : ""}
+              onChange={(e) => props.onFreightChargesChange(parseNumberFromCommas(e.target.value))}
               placeholder="e.g., 50,000"
             />
           </div>
