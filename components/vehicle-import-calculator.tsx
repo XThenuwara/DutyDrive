@@ -7,23 +7,114 @@ import { VehicleImportForm } from "@/components/vehicle-import-form"
 import { CostBreakdown } from "@/components/cost-breakdown"
 import taxRatesDataImport from "@/data/tax-rates.json"
 import { type TaxRatesData, type Currency, type VehicleType, type TaxRateEntry } from "@/types/tax"
+import { useSearchParams, useRouter, usePathname } from "next/navigation"
 
 const taxRatesData = taxRatesDataImport as TaxRatesData
 
 export default function VehicleImportCalculator() {
-  // Form state
-  const [selectedCurrency, setSelectedCurrency] = useState<Currency>("JPY")
-  const [selectedModel, setSelectedModel] = useState<keyof TaxRatesData["models"]>("default")
-  const [vehicleType, setVehicleType] = useState<VehicleType>("Hybrid")
-  const [engineCapacity, setEngineCapacity] = useState<number>(1500)
-  const [vehicleValue, setVehicleValue] = useState<number>(0)
-  const [currentRate, setCurrentRate] = useState<number>(0.5)
-  const [actualRate, setActualRate] = useState<number>(0.5)
-  const [freightCharges, setFreightCharges] = useState<number>(250000)
-  const [insuranceCharges, setInsuranceCharges] = useState<number>(250000)
+  const router = useRouter()
+  const pathname = usePathname()
+  const searchParams = useSearchParams()
+
+  // Helper function to update URL parameters
+  const updateUrlParams = (updates: Record<string, string | number | boolean>) => {
+    const params = new URLSearchParams(searchParams.toString())
+    Object.entries(updates).forEach(([key, value]) => {
+      if (value === "" || value === null || value === undefined) {
+        params.delete(key)
+      } else {
+        params.set(key, String(value))
+      }
+    })
+    router.push(`${pathname}?${params.toString()}`)
+  }
+
+  // Form state with URL parameter initialization
+  const [selectedCurrency, setSelectedCurrency] = useState<Currency>(
+    (searchParams.get("currency") as Currency) || "JPY"
+  )
+  const [selectedModel, setSelectedModel] = useState<keyof TaxRatesData["models"]>(
+    (searchParams.get("model") as keyof TaxRatesData["models"]) || "default"
+  )
+  const [vehicleType, setVehicleType] = useState<VehicleType>(
+    (searchParams.get("type") as VehicleType) || "Hybrid"
+  )
+  const [engineCapacity, setEngineCapacity] = useState<number>(
+    Number(searchParams.get("cc")) || 1500
+  )
+  const [vehicleValue, setVehicleValue] = useState<number>(
+    Number(searchParams.get("value")) || 0
+  )
+  const [currentRate, setCurrentRate] = useState<number>(
+    Number(searchParams.get("rate")) || 0.5
+  )
+  const [actualRate, setActualRate] = useState<number>(
+    Number(searchParams.get("actualRate")) || 0.5
+  )
+  const [freightCharges, setFreightCharges] = useState<number>(
+    Number(searchParams.get("freight")) || 250000
+  )
+  const [insuranceCharges, setInsuranceCharges] = useState<number>(
+    Number(searchParams.get("insurance")) || 250000
+  )
   const [isLoadingRate, setIsLoadingRate] = useState<boolean>(false)
-  const [palTaxPercentage, setPalTaxPercentage] = useState<number>(10)
-  const [isPalTaxEnabled, setIsPalTaxEnabled] = useState<boolean>(true)
+  const [palTaxPercentage, setPalTaxPercentage] = useState<number>(
+    Number(searchParams.get("palPercentage")) || 10
+  )
+  const [isPalTaxEnabled, setIsPalTaxEnabled] = useState<boolean>(
+    searchParams.get("palEnabled") !== "false"
+  )
+
+  // Wrapped state setters to update URL parameters
+  const handleCurrencyChange = (currency: Currency) => {
+    setSelectedCurrency(currency)
+    updateUrlParams({ currency })
+  }
+
+  const handleModelChange = (model: string) => {
+    setSelectedModel(model as keyof TaxRatesData["models"])
+    updateUrlParams({ model })
+  }
+
+  const handleVehicleTypeChange = (type: VehicleType) => {
+    setVehicleType(type)
+    updateUrlParams({ type })
+  }
+
+  const handleEngineCapacityChange = (capacity: number) => {
+    setEngineCapacity(capacity)
+    updateUrlParams({ cc: capacity })
+  }
+
+  const handleVehicleValueChange = (value: number) => {
+    setVehicleValue(value)
+    updateUrlParams({ value })
+  }
+
+  const handleCurrentRateChange = (rate: number) => {
+    setCurrentRate(rate)
+    updateUrlParams({ rate })
+  }
+
+  const handleFreightChargesChange = (charges: number) => {
+    setFreightCharges(charges)
+    updateUrlParams({ freight: charges })
+  }
+
+  const handleInsuranceChargesChange = (charges: number) => {
+    setInsuranceCharges(charges)
+    updateUrlParams({ insurance: charges })
+  }
+
+  const handlePalTaxPercentageChange = (percentage: number) => {
+    setPalTaxPercentage(percentage)
+    updateUrlParams({ palPercentage: percentage })
+  }
+
+  const handlePalTaxEnabledChange = (enabled: boolean) => {
+    setIsPalTaxEnabled(enabled)
+    updateUrlParams({ palEnabled: enabled })
+  }
 
   // Calculated values
   const [cifValue, setCifValue] = useState<number>(0)
@@ -167,22 +258,22 @@ export default function VehicleImportCalculator() {
           xidTaxRate={xidTaxRate}
           xidTaxTotal={xidTaxTotal}
           taxRatesData={taxRatesData}
-          onCurrencyChange={setSelectedCurrency}
-          onModelChange={setSelectedModel}
-          onVehicleTypeChange={setVehicleType}
-          onEngineCapacityChange={setEngineCapacity}
-          onVehicleValueChange={setVehicleValue}
-          onCurrentRateChange={setCurrentRate}
-          onFreightChargesChange={setFreightCharges}
-          onInsuranceChargesChange={setInsuranceCharges}
+          onCurrencyChange={handleCurrencyChange}
+          onModelChange={handleModelChange}
+          onVehicleTypeChange={handleVehicleTypeChange}
+          onEngineCapacityChange={handleEngineCapacityChange}
+          onVehicleValueChange={handleVehicleValueChange}
+          onCurrentRateChange={handleCurrentRateChange}
+          onFreightChargesChange={handleFreightChargesChange}
+          onInsuranceChargesChange={handleInsuranceChargesChange}
           onRefreshRate={fetchExchangeRate}
           actualRate={actualRate}
           palTax={palTax}
           palTaxPercentage={palTaxPercentage}
           onPalTaxChange={setPalTax}
-          onPalTaxPercentageChange={setPalTaxPercentage}
+          onPalTaxPercentageChange={handlePalTaxPercentageChange}
           isPalTaxEnabled={isPalTaxEnabled}
-          onPalTaxEnabledChange={setIsPalTaxEnabled}
+          onPalTaxEnabledChange={handlePalTaxEnabledChange}
         />
 
         <CostBreakdown

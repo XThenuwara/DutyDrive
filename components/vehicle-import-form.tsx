@@ -200,7 +200,7 @@ export function VehicleImportForm(props: VehicleImportFormProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
             <div className="flex items-center gap-2">
-              <Label htmlFor="palTaxEnabled">Enable PAL Tax</Label>
+              <Label htmlFor="palTaxEnabled">Enable PAL %</Label>
             </div>
             <div className="flex items-center gap-2">
 
