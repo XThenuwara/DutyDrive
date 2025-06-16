@@ -1,7 +1,9 @@
 import { formatCurrency, formatReadable, formatNumberWithCommas } from "@/lib/utils";
 import { type TaxModel, type VehicleType, type TaxRateEntry } from "@/types/tax";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { InfoIcon } from "lucide-react"
+import { InfoIcon, Copy, Check } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { useState } from "react"
 
 interface CostBreakdownProps {
   cifValue: number;
@@ -25,9 +27,44 @@ interface CostBreakdownProps {
 }
 
 export function CostBreakdown({ ...props }: CostBreakdownProps) {
+  const [copied, setCopied] = useState(false)
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    } catch (err) {
+      console.error('Failed to copy:', err)
+    }
+  }
+
   return (
     <div className="mt-6 bg-zinc-50 dark:bg-zinc-900 p-4 rounded-md border">
-      <h3 className="font-semibold text-lg mb-4">Calculation Breakdown</h3>
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="font-semibold text-lg">Calculation Breakdown</h3>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8"
+                onClick={handleCopy}
+              >
+                {copied ? (
+                  <Check className="h-4 w-4 text-green-500" />
+                ) : (
+                  <Copy className="h-4 w-4" />
+                )}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{copied ? "Link copied!" : "Copy calculation link"}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </div>
 
       <div className="divide-y divide-zinc-200 dark:divide-zinc-700">
         <BreakdownRow 

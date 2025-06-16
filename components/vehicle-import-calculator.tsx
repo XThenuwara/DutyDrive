@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Calculator } from "lucide-react"
 import { VehicleImportForm } from "@/components/vehicle-import-form"
@@ -11,7 +11,7 @@ import { useSearchParams, useRouter, usePathname } from "next/navigation"
 
 const taxRatesData = taxRatesDataImport as TaxRatesData
 
-export default function VehicleImportCalculator() {
+function VehicleImportCalculatorContent() {
   const router = useRouter()
   const pathname = usePathname()
   const searchParams = useSearchParams()
@@ -296,6 +296,23 @@ export default function VehicleImportCalculator() {
         />
       </CardContent>
     </Card>
+  )
+}
+
+export default function VehicleImportCalculator() {
+  return (
+    <Suspense fallback={
+      <Card className="shadow-lg rounded-lg">
+        <CardHeader className="bg-slate-50 dark:bg-zinc-800 border-b rounded-t-lg">
+          <div className="flex items-center gap-2">
+            <CardTitle>Vehicle Import Cost Calculator</CardTitle>
+          </div>
+          <CardDescription>Loading calculator...</CardDescription>
+        </CardHeader>
+      </Card>
+    }>
+      <VehicleImportCalculatorContent />
+    </Suspense>
   )
 }
 
