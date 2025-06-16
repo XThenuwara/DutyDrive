@@ -23,6 +23,7 @@ export default function VehicleImportCalculator() {
   const [insuranceCharges, setInsuranceCharges] = useState<number>(250000)
   const [isLoadingRate, setIsLoadingRate] = useState<boolean>(false)
   const [palTaxPercentage, setPalTaxPercentage] = useState<number>(10)
+  const [isPalTaxEnabled, setIsPalTaxEnabled] = useState<boolean>(true)
 
   // Calculated values
   const [cifValue, setCifValue] = useState<number>(0)
@@ -101,8 +102,8 @@ export default function VehicleImportCalculator() {
     const calculatedCif = vehicleValue * currentRate + freightCharges + insuranceCharges
     setCifValue(calculatedCif)
 
-    // Calculate PAL Tax (percentage of CIF)
-    const calculatedPalTax = calculatedCif * (palTaxPercentage / 100)
+    // Calculate PAL Tax (percentage of CIF) if enabled
+    const calculatedPalTax = isPalTaxEnabled ? calculatedCif * (palTaxPercentage / 100) : 0
     setPalTax(calculatedPalTax)
 
     const selectedModelData = taxRatesData.models[selectedModel]
@@ -141,7 +142,7 @@ export default function VehicleImportCalculator() {
 
     // Calculate Total Cost
     setTotalCost(calculatedTotalWithoutVat + calculatedVat)
-  }, [vehicleValue, currentRate, freightCharges, insuranceCharges, vehicleType, xidTaxRate, engineCapacity, currentTaxBracket, selectedModel, palTaxPercentage])
+  }, [vehicleValue, currentRate, freightCharges, insuranceCharges, vehicleType, xidTaxRate, engineCapacity, currentTaxBracket, selectedModel, palTaxPercentage, isPalTaxEnabled])
 
   return (
     <Card className="shadow-lg rounded-lg">
@@ -180,6 +181,8 @@ export default function VehicleImportCalculator() {
           palTaxPercentage={palTaxPercentage}
           onPalTaxChange={setPalTax}
           onPalTaxPercentageChange={setPalTaxPercentage}
+          isPalTaxEnabled={isPalTaxEnabled}
+          onPalTaxEnabledChange={setIsPalTaxEnabled}
         />
 
         <CostBreakdown
@@ -198,6 +201,7 @@ export default function VehicleImportCalculator() {
           taxRatesData={taxRatesData}
           palTax={palTax}
           palTaxPercentage={palTaxPercentage}
+          isPalTaxEnabled={isPalTaxEnabled}
         />
       </CardContent>
     </Card>

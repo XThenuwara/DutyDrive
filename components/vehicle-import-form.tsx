@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Button } from "@/components/ui/button"
 import { RefreshCw } from "lucide-react"
 import { NumericInput } from "@/components/ui/numeric-input"
+import { Checkbox } from "@/components/ui/checkbox"
 
 interface VehicleImportFormProps {
   selectedCurrency: Currency
@@ -23,6 +24,7 @@ interface VehicleImportFormProps {
   taxRatesData: TaxRatesData
   palTax: number
   palTaxPercentage: number
+  isPalTaxEnabled: boolean
   onCurrencyChange: (currency: Currency) => void
   onModelChange: (model: string) => void
   onVehicleTypeChange: (type: VehicleType) => void
@@ -34,6 +36,7 @@ interface VehicleImportFormProps {
   onRefreshRate: () => void
   onPalTaxChange: (tax: number) => void
   onPalTaxPercentageChange: (percentage: number) => void
+  onPalTaxEnabledChange: (enabled: boolean) => void
   actualRate?: number
 }
 
@@ -196,13 +199,23 @@ export function VehicleImportForm(props: VehicleImportFormProps) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <Label htmlFor="palTaxPercentage">PAL Tax Percentage</Label>
-            <NumericInput
+            <div className="flex items-center gap-2">
+              <Label htmlFor="palTaxEnabled">Enable PAL Tax</Label>
+            </div>
+            <div className="flex items-center gap-2">
+
+            <Checkbox
+                id="palTaxEnabled"
+                checked={props.isPalTaxEnabled}
+                onCheckedChange={(checked) => props.onPalTaxEnabledChange(checked as boolean)}
+              />
+              <NumericInput
               id="palTaxPercentage"
               value={props.palTaxPercentage}
               onChange={props.onPalTaxPercentageChange}
               placeholder="e.g., 10"
-            />
+              />
+            </div>
             {props.palTax > 0 && (
               <p className="text-xs text-slate-500 mt-1">
                 PAL Tax Total: {formatCurrency(props.palTax)} ({formatReadable(props.palTax)})
