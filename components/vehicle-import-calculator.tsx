@@ -2,7 +2,6 @@
 
 import { useState, useEffect, Suspense } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Calculator } from "lucide-react";
 import { VehicleImportForm } from "@/components/vehicle-import-form";
 import { CostBreakdown } from "@/components/cost-breakdown";
 import taxRatesDataImport from "@/data/tax-rates.json";
@@ -26,7 +25,7 @@ function VehicleImportCalculatorContent() {
         params.set(key, String(value));
       }
     });
-    router.push(`${pathname}?${params.toString()}`);
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
   // Form state with URL parameter initialization
@@ -225,19 +224,7 @@ function VehicleImportCalculatorContent() {
 
     // Calculate Total Cost
     setTotalCost(calculatedTotalWithoutVat + calculatedVat);
-  }, [
-    vehicleValue, 
-    currentRate, 
-    freightCharges, 
-    insuranceCharges, 
-    vehicleType, 
-    xidTaxRate, 
-    engineCapacity, 
-    currentTaxBracket, 
-    selectedModel, 
-    palTaxPercentage, 
-    isPalTaxEnabled
-  ]);
+  }, [vehicleValue, currentRate, freightCharges, insuranceCharges, vehicleType, xidTaxRate, engineCapacity, currentTaxBracket, selectedModel, palTaxPercentage, isPalTaxEnabled]);
 
   return (
     <Card className="shadow-lg rounded-lg">
