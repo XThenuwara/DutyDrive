@@ -16,6 +16,8 @@ interface CostBreakdownProps {
   engineCapacity: number;
   xidTaxRate: number;
   currentTaxBracket: TaxRateEntry | null;
+  palTax: number;
+  palTaxPercentage: number;
   taxRatesData: {
     models: Record<string, TaxModel>;
   };
@@ -31,6 +33,12 @@ export function CostBreakdown({ ...props }: CostBreakdownProps) {
           label="CIF Value" 
           amount={props.cifValue}
           description="(Vehicle Value × Current Rate) + Freight Charges + Insurance Charges"
+        />
+
+        <BreakdownRow 
+          label={`PAL Tax (${props.palTaxPercentage}% of CIF)`}
+          amount={props.palTax}
+          description="Port and Airport Levy - Calculated as percentage of CIF Value"
         />
 
         <BreakdownRow 
@@ -59,9 +67,9 @@ export function CostBreakdown({ ...props }: CostBreakdownProps) {
         />
 
         <BreakdownRow 
-          label="Total Without VAT"
+          label="Subtotal (Including All Taxes Except VAT)"
           amount={props.totalWithoutVat}
-          description="CIF Value + CID Tax + XID Tax + Luxury Tax"
+          description="CIF Value + PAL Tax + CID Tax + XID Tax + Luxury Tax"
         />
 
         <BreakdownRow 

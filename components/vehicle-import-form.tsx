@@ -21,6 +21,8 @@ interface VehicleImportFormProps {
   xidTaxRate: number
   xidTaxTotal: number
   taxRatesData: TaxRatesData
+  palTax: number
+  palTaxPercentage: number
   onCurrencyChange: (currency: Currency) => void
   onModelChange: (model: string) => void
   onVehicleTypeChange: (type: VehicleType) => void
@@ -30,6 +32,8 @@ interface VehicleImportFormProps {
   onFreightChargesChange: (charges: number) => void
   onInsuranceChargesChange: (charges: number) => void
   onRefreshRate: () => void
+  onPalTaxChange: (tax: number) => void
+  onPalTaxPercentageChange: (percentage: number) => void
   actualRate?: number
 }
 
@@ -144,7 +148,7 @@ export function VehicleImportForm(props: VehicleImportFormProps) {
               value={props.currentRate || ""}
               onChange={(e) => props.onCurrentRateChange(Number(e.target.value))}
             />
-            <p className="text-xs text-slate-500">
+            <p className="text-xs text-zinc-500">
                 {props.actualRate ? `Actual Rate : (${formatCurrency(props.actualRate)}) + 0.05%` : ""}
             </p>
           </div>
@@ -187,6 +191,23 @@ export function VehicleImportForm(props: VehicleImportFormProps) {
               onChange={props.onInsuranceChargesChange}
               placeholder="e.g., 25,000"
             />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="space-y-2">
+            <Label htmlFor="palTaxPercentage">PAL Tax Percentage</Label>
+            <NumericInput
+              id="palTaxPercentage"
+              value={props.palTaxPercentage}
+              onChange={props.onPalTaxPercentageChange}
+              placeholder="e.g., 10"
+            />
+            {props.palTax > 0 && (
+              <p className="text-xs text-slate-500 mt-1">
+                PAL Tax Total: {formatCurrency(props.palTax)} ({formatReadable(props.palTax)})
+              </p>
+            )}
           </div>
         </div>
       </div>

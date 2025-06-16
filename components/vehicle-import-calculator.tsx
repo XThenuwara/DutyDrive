@@ -14,14 +14,15 @@ export default function VehicleImportCalculator() {
   // Form state
   const [selectedCurrency, setSelectedCurrency] = useState<Currency>("JPY")
   const [selectedModel, setSelectedModel] = useState<keyof TaxRatesData["models"]>("default")
-  const [vehicleType, setVehicleType] = useState<VehicleType>("NonHybrid")
-  const [engineCapacity, setEngineCapacity] = useState<number>(1000)
+  const [vehicleType, setVehicleType] = useState<VehicleType>("Hybrid")
+  const [engineCapacity, setEngineCapacity] = useState<number>(1500)
   const [vehicleValue, setVehicleValue] = useState<number>(0)
   const [currentRate, setCurrentRate] = useState<number>(0.5)
   const [actualRate, setActualRate] = useState<number>(0.5)
   const [freightCharges, setFreightCharges] = useState<number>(250000)
   const [insuranceCharges, setInsuranceCharges] = useState<number>(250000)
   const [isLoadingRate, setIsLoadingRate] = useState<boolean>(false)
+  const [palTaxPercentage, setPalTaxPercentage] = useState<number>(10)
 
   // Calculated values
   const [cifValue, setCifValue] = useState<number>(0)
@@ -33,6 +34,7 @@ export default function VehicleImportCalculator() {
   const [xidTaxRate, setXidTaxRate] = useState<number>(0)
   const [xidTaxTotal, setXidTaxTotal] = useState<number>(0)
   const [currentTaxBracket, setCurrentTaxBracket] = useState<TaxRateEntry | null>(null)
+  const [palTax, setPalTax] = useState<number>(0)
 
   // Get XID tax rate based on vehicle type and engine capacity
   const getXidTaxRate = (
@@ -99,6 +101,10 @@ export default function VehicleImportCalculator() {
     const calculatedCif = vehicleValue * currentRate + freightCharges + insuranceCharges
     setCifValue(calculatedCif)
 
+    // Calculate PAL Tax (percentage of CIF)
+    const calculatedPalTax = calculatedCif * (palTaxPercentage / 100)
+    setPalTax(calculatedPalTax)
+
     const selectedModelData = taxRatesData.models[selectedModel]
     if (!selectedModelData) return
 
@@ -126,7 +132,7 @@ export default function VehicleImportCalculator() {
     setXidTaxTotal(calculatedXidTaxTotal)
 
     // Calculate Total Without VAT
-    const calculatedTotalWithoutVat = calculatedCif + calculatedCidTax + calculatedXidTaxTotal + calculatedLuxuryTax
+    const calculatedTotalWithoutVat = calculatedCif + calculatedPalTax + calculatedCidTax + calculatedXidTaxTotal + calculatedLuxuryTax
     setTotalWithoutVat(calculatedTotalWithoutVat)
 
     // Calculate VAT using selected model's rate
@@ -135,7 +141,7 @@ export default function VehicleImportCalculator() {
 
     // Calculate Total Cost
     setTotalCost(calculatedTotalWithoutVat + calculatedVat)
-  }, [vehicleValue, currentRate, freightCharges, insuranceCharges, vehicleType, xidTaxRate, engineCapacity, currentTaxBracket, selectedModel])
+  }, [vehicleValue, currentRate, freightCharges, insuranceCharges, vehicleType, xidTaxRate, engineCapacity, currentTaxBracket, selectedModel, palTaxPercentage])
 
   return (
     <Card className="shadow-lg rounded-lg">
@@ -170,6 +176,10 @@ export default function VehicleImportCalculator() {
           onInsuranceChargesChange={setInsuranceCharges}
           onRefreshRate={fetchExchangeRate}
           actualRate={actualRate}
+          palTax={palTax}
+          palTaxPercentage={palTaxPercentage}
+          onPalTaxChange={setPalTax}
+          onPalTaxPercentageChange={setPalTaxPercentage}
         />
 
         <CostBreakdown
@@ -186,6 +196,8 @@ export default function VehicleImportCalculator() {
           xidTaxRate={xidTaxRate}
           currentTaxBracket={currentTaxBracket}
           taxRatesData={taxRatesData}
+          palTax={palTax}
+          palTaxPercentage={palTaxPercentage}
         />
       </CardContent>
     </Card>

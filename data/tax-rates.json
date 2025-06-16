@@ -5,6 +5,7 @@
       "description": "CIF rate of 30%, VAT rate of 18%, and luxury tax rates beyond 5M for non-hybrid vehicles and 5.5M for hybrid vehicles.",
       "cifRate": 0.3,
       "vatRate": 0.18,
+      "palRate": 0.05,
       "luxuryTax": {
         "NonHybrid": {
           "threshold": 5000000,
