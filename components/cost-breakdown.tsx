@@ -150,12 +150,12 @@ export function BreakdownRow({ label, amount, description, isTotal, children }: 
           <div className="flex items-center gap-1">
             {label}
             {description && (
-              <TooltipProvider>
+              <TooltipProvider delayDuration={0}>
                 <Tooltip>
-                  <TooltipTrigger className="md:hidden">
+                  <TooltipTrigger asChild>
                     <InfoIcon className="h-3 w-3 text-slate-400" />
                   </TooltipTrigger>
-                  <TooltipContent>
+                  <TooltipContent side="right" className="max-w-[200px]">
                     <p className="text-xs">{description}</p>
                   </TooltipContent>
                 </Tooltip>

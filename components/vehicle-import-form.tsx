@@ -1,49 +1,53 @@
-import { formatCurrency, formatNumberWithCommas, formatReadable } from "@/lib/utils"
-import { type TaxRatesData, type Currency, type VehicleType, type TaxRateEntry } from "@/types/tax"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Button } from "@/components/ui/button"
-import { RefreshCw } from "lucide-react"
-import { NumericInput } from "@/components/ui/numeric-input"
-import { Checkbox } from "@/components/ui/checkbox"
+import { formatCurrency, formatNumberWithCommas, formatReadable } from "@/lib/utils";
+import { type TaxRatesData, type Currency, type VehicleType, type TaxRateEntry } from "@/types/tax";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { RefreshCw } from "lucide-react";
+import { NumericInput } from "@/components/ui/numeric-input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { cn } from "@/lib/utils";
 
 interface VehicleImportFormProps {
-  selectedCurrency: Currency
-  selectedModel: string
-  vehicleType: VehicleType
-  engineCapacity: number
-  vehicleValue: number
-  currentRate: number
-  freightCharges: number
-  insuranceCharges: number
-  isLoadingRate: boolean
-  currentTaxBracket: TaxRateEntry | null
-  xidTaxRate: number
-  xidTaxTotal: number
-  taxRatesData: TaxRatesData
-  palTax: number
-  palTaxPercentage: number
-  isPalTaxEnabled: boolean
-  onCurrencyChange: (currency: Currency) => void
-  onModelChange: (model: string) => void
-  onVehicleTypeChange: (type: VehicleType) => void
-  onEngineCapacityChange: (capacity: number) => void
-  onVehicleValueChange: (value: number) => void
-  onCurrentRateChange: (rate: number) => void
-  onFreightChargesChange: (charges: number) => void
-  onInsuranceChargesChange: (charges: number) => void
-  onRefreshRate: () => void
-  onPalTaxChange: (tax: number) => void
-  onPalTaxPercentageChange: (percentage: number) => void
-  onPalTaxEnabledChange: (enabled: boolean) => void
-  actualRate?: number
+  selectedCurrency: Currency;
+  selectedModel: string;
+  vehicleType: VehicleType;
+  engineCapacity: number;
+  vehicleValue: number;
+  currentRate: number;
+  freightCharges: number;
+  insuranceCharges: number;
+  isLoadingRate: boolean;
+  currentTaxBracket: TaxRateEntry | null;
+  xidTaxRate: number;
+  xidTaxTotal: number;
+  taxRatesData: TaxRatesData;
+  palTax: number;
+  palTaxPercentage: number;
+  isPalTaxEnabled: boolean;
+  onCurrencyChange: (currency: Currency) => void;
+  onModelChange: (model: string) => void;
+  onVehicleTypeChange: (type: VehicleType) => void;
+  onEngineCapacityChange: (capacity: number) => void;
+  onVehicleValueChange: (value: number) => void;
+  onCurrentRateChange: (rate: number) => void;
+  onXidTaxRateChange: (rate: number) => void;
+  onFreightChargesChange: (charges: number) => void;
+  onInsuranceChargesChange: (charges: number) => void;
+  onRefreshRate: () => void;
+  onPalTaxChange: (tax: number) => void;
+  onPalTaxPercentageChange: (percentage: number) => void;
+  onPalTaxEnabledChange: (enabled: boolean) => void;
+  actualRate?: number;
+  isXidRateManual: boolean;
+  onResetXidRate: () => void;
 }
 
 export function VehicleImportForm(props: VehicleImportFormProps) {
   const parseNumberFromCommas = (value: string) => {
-    return Number.parseFloat(value.replace(/,/g, "")) || 0
-  }
+    return Number.parseFloat(value.replace(/,/g, "")) || 0;
+  };
 
   return (
     <div className="space-y-6">
@@ -81,6 +85,8 @@ export function VehicleImportForm(props: VehicleImportFormProps) {
         </div>
       </div>
 
+      <div className="border dark:border-zinc-900"></div>
+
       <div className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
@@ -98,12 +104,7 @@ export function VehicleImportForm(props: VehicleImportFormProps) {
 
           <div className="space-y-2">
             <Label htmlFor="engineCapacity">Engine Capacity (cc)</Label>
-            <NumericInput
-              id="engineCapacity"
-              value={props.engineCapacity}
-              onChange={props.onEngineCapacityChange}
-              placeholder="e.g., 1000"
-            />
+            <NumericInput id="engineCapacity" value={props.engineCapacity} onChange={props.onEngineCapacityChange} placeholder="e.g., 1000" />
             {props.currentTaxBracket && (
               <p className="text-xs text-slate-500 mt-1">
                 Tax Bracket: {props.currentTaxBracket.description} ({props.currentTaxBracket.hsCode || "N/A"})
@@ -113,15 +114,8 @@ export function VehicleImportForm(props: VehicleImportFormProps) {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="vehicleValue">
-            Vehicle Value (in {props.taxRatesData.supportedCurrencies[props.selectedCurrency].name})
-          </Label>
-          <NumericInput
-            id="vehicleValue"
-            value={props.vehicleValue}
-            onChange={props.onVehicleValueChange}
-            placeholder={`e.g., 2,500,000 ${props.taxRatesData.supportedCurrencies[props.selectedCurrency].symbol}`}
-          />
+          <Label htmlFor="vehicleValue">Vehicle Value (in {props.taxRatesData.supportedCurrencies[props.selectedCurrency].name})</Label>
+          <NumericInput id="vehicleValue" value={props.vehicleValue} onChange={props.onVehicleValueChange} placeholder={`e.g., 2,500,000 ${props.taxRatesData.supportedCurrencies[props.selectedCurrency].symbol}`} />
           {props.vehicleValue > 0 && (
             <p className="text-xs text-slate-500 mt-1">
               Base value: {formatCurrency(props.vehicleValue * props.currentRate)} ({formatReadable(props.vehicleValue * props.currentRate)})
@@ -129,44 +123,33 @@ export function VehicleImportForm(props: VehicleImportFormProps) {
           )}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="border dark:border-zinc-900"></div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
           <div className="space-y-2">
             <Label htmlFor="currentRate" className="flex items-center gap-2">
               Current Exchange Rate ({props.selectedCurrency} to LKR)
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                onClick={props.onRefreshRate}
-                disabled={props.isLoadingRate}
-                className="h-6 w-6 p-0"
-              >
+              <Button type="button" variant="ghost" size="sm" onClick={props.onRefreshRate} disabled={props.isLoadingRate} className="h-6 w-6 p-0">
                 <RefreshCw className={`h-3 w-3 ${props.isLoadingRate ? "animate-spin" : ""}`} />
               </Button>
             </Label>
-            <Input
-              id="currentRate"
-              type="number"
-              step="0.001"
-              value={props.currentRate || ""}
-              onChange={(e) => props.onCurrentRateChange(Number(e.target.value))}
-            />
-            <p className="text-xs text-zinc-500">
-                {props.actualRate ? `Actual Rate : (${formatCurrency(props.actualRate)}) + 0.05%` : ""}
-            </p>
+            <Input id="currentRate" type="number" step="0.001" value={props.currentRate || ""} onChange={(e) => props.onCurrentRateChange(Number(e.target.value))} />
+            <p className="text-xs text-zinc-500">{props.actualRate ? `Actual Rate : (${formatCurrency(props.actualRate)}) + 0.05%` : ""}</p>
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="xidTaxRate">
+            <Label htmlFor="xidTaxRate" className="flex items-center gap-2">
               XID Tax Rate {props.currentTaxBracket?.ratePerUnit ? "(per unit)" : "(per cc)"}
+              {props.isXidRateManual && <span className="text-xs text-slate-500">(Manual)</span>}
             </Label>
-            <Input
-              id="xidTaxRate"
-              type="text"
-              value={props.xidTaxRate ? formatNumberWithCommas(props.xidTaxRate) : ""}
-              placeholder="Auto-calculated based on vehicle type and CC"
-              readOnly
-            />
+            <div className="flex gap-2">
+              <Input id="xidTaxRate" type="number" step="0.01" value={props.xidTaxRate || ""} onChange={(e) => props.onXidTaxRateChange(Number(e.target.value))} placeholder={props.isXidRateManual ? "Enter XID tax rate" : "Auto-calculated based on vehicle type and CC"} className={props.isXidRateManual ? "border-blue-500" : ""} />
+              {props.isXidRateManual && (
+                <Button type="button" variant="outline" size="icon" onClick={props.onResetXidRate} className="h-10 w-10" title="Reset to auto-calculation">
+                  <RefreshCw className="h-4 w-4" />
+                </Button>
+              )}
+            </div>
             {props.xidTaxRate > 0 && (
               <p className="text-xs text-slate-500 mt-1">
                 XID Tax Total: {formatCurrency(props.xidTaxTotal)} ({formatReadable(props.xidTaxTotal)})
@@ -178,22 +161,12 @@ export function VehicleImportForm(props: VehicleImportFormProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="space-y-2">
             <Label htmlFor="rateCharges">Freight Charges (LKR)</Label>
-            <NumericInput
-              id="rateCharges"
-              value={props.freightCharges}
-              onChange={props.onFreightChargesChange}
-              placeholder="e.g., 50,000"
-            />
+            <NumericInput id="rateCharges" value={props.freightCharges} onChange={props.onFreightChargesChange} placeholder="e.g., 50,000" />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="insuranceCharges">Insurance Charges (LKR)</Label>
-            <NumericInput
-              id="insuranceCharges"
-              value={props.insuranceCharges}
-              onChange={props.onInsuranceChargesChange}
-              placeholder="e.g., 25,000"
-            />
+            <NumericInput id="insuranceCharges" value={props.insuranceCharges} onChange={props.onInsuranceChargesChange} placeholder="e.g., 25,000" />
           </div>
         </div>
 
@@ -202,19 +175,11 @@ export function VehicleImportForm(props: VehicleImportFormProps) {
             <div className="flex items-center gap-2">
               <Label htmlFor="palTaxEnabled">Enable PAL %</Label>
             </div>
-            <div className="flex items-center gap-2">
-
-            <Checkbox
-                id="palTaxEnabled"
-                checked={props.isPalTaxEnabled}
-                onCheckedChange={(checked) => props.onPalTaxEnabledChange(checked as boolean)}
-              />
-              <NumericInput
-              id="palTaxPercentage"
-              value={props.palTaxPercentage}
-              onChange={props.onPalTaxPercentageChange}
-              placeholder="e.g., 10"
-              />
+            <div className="flex items-center gap-">
+              <Button type="button"  variant="outline" size="sm" onClick={() => props.onPalTaxEnabledChange(!props.isPalTaxEnabled)} className="relative h-10 w-10 px-3">
+                <div className={cn("h-2 w-2 rounded-full", props.isPalTaxEnabled ? "bg-green-500" : "bg-slate-400")} />
+              </Button>
+              <NumericInput id="palTaxPercentage" value={props.palTaxPercentage} onChange={props.onPalTaxPercentageChange} placeholder="e.g., 10" disabled={!props.isPalTaxEnabled} className={cn("transition-opacity", !props.isPalTaxEnabled && "opacity-50")} />
             </div>
             {props.palTax > 0 && (
               <p className="text-xs text-slate-500 mt-1">
@@ -225,5 +190,5 @@ export function VehicleImportForm(props: VehicleImportFormProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }
