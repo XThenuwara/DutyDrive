@@ -105,7 +105,7 @@ export function CostBreakdown({ ...props }: CostBreakdownProps) {
             <div className="grid grid-cols-12 gap-1 md:gap-2 items-start md:items-center mt-1">
               <div className="col-span-12 md:col-span-7 text-sm">
                 <div className="flex items-center gap-1">
-                  Worst Case
+                  Worst Case (+0.5%)
                   <TooltipProvider delayDuration={0}>
                     <Tooltip>
                       <TooltipTrigger asChild>

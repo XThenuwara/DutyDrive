@@ -278,6 +278,10 @@
     "EUR": {
       "name": "Euro",
       "symbol": "€"
+    },
+    "INR": {
+      "name": "Indian Rupee",
+      "symbol" : "INR"
     }
   }
 }

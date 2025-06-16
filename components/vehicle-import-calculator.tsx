@@ -34,8 +34,14 @@ function VehicleImportCalculatorContent() {
   const [vehicleType, setVehicleType] = useState<VehicleType>((searchParams.get("type") as VehicleType) || "Hybrid");
   const [engineCapacity, setEngineCapacity] = useState<number>(Number(searchParams.get("cc")) || 1500);
   const [vehicleValue, setVehicleValue] = useState<number>(Number(searchParams.get("value")) || 0);
-  const [currentRate, setCurrentRate] = useState<number>(Number(searchParams.get("rate")) || 0.5);
-  const [actualRate, setActualRate] = useState<number>(Number(searchParams.get("actualRate")) || 0.5);
+  const [currentRate, setCurrentRate] = useState<number>(() => {
+    const rateFromUrl = searchParams.get("rate");
+    return rateFromUrl ? Number(rateFromUrl) : 0.5;
+  });
+  const [actualRate, setActualRate] = useState<number>(() => {
+    const rateFromUrl = searchParams.get("rate");
+    return rateFromUrl ? Number(rateFromUrl) : 0.5;
+  });
   const [freightCharges, setFreightCharges] = useState<number>(Number(searchParams.get("freight")) || 250000);
   const [insuranceCharges, setInsuranceCharges] = useState<number>(Number(searchParams.get("insurance")) || 250000);
   const [isLoadingRate, setIsLoadingRate] = useState<boolean>(false);
@@ -153,7 +159,12 @@ function VehicleImportCalculatorContent() {
   }, [vehicleType, engineCapacity, selectedModel, isXidRateManual]);
 
   // Fetch exchange rate from API
-  const fetchExchangeRate = async () => {
+  const fetchExchangeRate = async (forced? : boolean) => {
+    // Skip if we have a rate from URL
+    if (searchParams.has("rate") && !forced) {
+      return;
+    }
+
     setIsLoadingRate(true);
     try {
       const response = await fetch(`https://api.exchangerate-api.com/v4/latest/${selectedCurrency}`);
@@ -175,8 +186,11 @@ function VehicleImportCalculatorContent() {
     }
   };
 
+  // Only fetch rate on initial load if no rate in URL
   useEffect(() => {
-    fetchExchangeRate();
+    if (!searchParams.has("rate")) {
+      fetchExchangeRate();
+    }
   }, [selectedCurrency]);
 
   useEffect(() => {
@@ -267,7 +281,7 @@ function VehicleImportCalculatorContent() {
           isPalTaxEnabled={isPalTaxEnabled}
           onPalTaxEnabledChange={handlePalTaxEnabledChange}
           isXidRateManual={isXidRateManual}
-          onRefreshRate={fetchExchangeRate}
+          onRefreshRate={()=>fetchExchangeRate(true)}
         />
 
         <CostBreakdown
