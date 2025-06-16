@@ -77,8 +77,6 @@ export function CostBreakdown({ ...props }: CostBreakdownProps) {
           })()}
         />
 
-        <BreakdownRow label="Subtotal (Including All Taxes Except VAT)" amount={props.totalWithoutVat} description="CIF Value + PAL Tax + CID Tax + XID Tax + Luxury Tax" />
-
         <BreakdownRow label={`VAT (${props.selectedModel?.vatRate * 100}%)`} amount={props.vat} />
 
         <BreakdownRow label="Total Import Cost" amount={props.totalCost} isTotal={true}>
