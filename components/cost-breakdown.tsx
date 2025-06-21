@@ -80,7 +80,7 @@ export function CostBreakdown({ ...props }: CostBreakdownProps) {
         <BreakdownRow label={`VAT (${props.selectedModel?.vatRate * 100}%)`} amount={props.vat} />
 
         <BreakdownRow label="Total Import Cost" amount={props.totalCost} isTotal={true}>
-          <div className="mt-6 pl-4 border-l-2 border-slate-200 dark:border-slate-700">
+          <div className="mt-6 dark:border-slate-700">
             <div className="grid grid-cols-12 gap-1 md:gap-2 items-start md:items-center">
               <div className="col-span-12 md:col-span-7 text-sm">
                 <div className="flex items-center gap-1">

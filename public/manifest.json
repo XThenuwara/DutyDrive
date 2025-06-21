@@ -1,0 +1,29 @@
+{
+  "name": "DutyDrive",
+  "short_name": "DutyDrive",
+  "description": "Sri Lanka Vehicle Import Cost Calculator",
+  "start_url": "/DutyDrive/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#09090b",
+  "orientation": "portrait-primary",
+  "categories": ["utilities", "finance", "productivity"],
+  "dir": "ltr",
+  "lang": "en-US",
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "screenshots": [
+    {
+      "src": "/DutyDrive/screenshots/desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "platform": "wide"
+    },
+    {
+      "src": "/DutyDrive/screenshots/mobile.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "platform": "narrow"
+    }
+  ]
+}

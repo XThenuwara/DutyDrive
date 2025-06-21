@@ -244,7 +244,7 @@ function VehicleImportCalculatorContent() {
     <Card className="shadow-lg rounded-lg">
       <CardHeader className="bg-slate-50 dark:bg-zinc-800  border-b rounded-t-lg">
         <div className="flex items-center gap-2">
-          <CardTitle>Vehicle Import Cost Calculator</CardTitle>
+          <CardTitle>Sri Lanka Vehicle Import Cost Calculator</CardTitle>
         </div>
         <CardDescription>Enter your vehicle details to calculate import costs</CardDescription>
       </CardHeader>
@@ -314,7 +314,7 @@ export default function VehicleImportCalculator() {
         <Card className="shadow-lg rounded-lg">
           <CardHeader className="bg-slate-50 dark:bg-zinc-800 border-b rounded-t-lg">
             <div className="flex items-center gap-2">
-              <CardTitle>Vehicle Import Cost Calculator</CardTitle>
+              <CardTitle>Sri Lanka Vehicle Import Cost Calculator</CardTitle>
             </div>
             <CardDescription>Loading calculator...</CardDescription>
           </CardHeader>
